@@ -2,28 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PubSubSender : MonoBehaviour
+namespace info.jacobingalls.jamkit
 {
-
-    private PubSubManager pubSubMan;
-
-    // Start is called before the first frame update
-    void Awake()
+    public class PubSubSender : MonoBehaviour
     {
-        pubSubMan = PubSubManager.Instance;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        private PubSubManager pubSubMan;
 
-    public void Publish(string key) {
-        pubSubMan.Publish(key, gameObject, this);
-    }
+        // Start is called before the first frame update
+        void Awake()
+        {
+            pubSubMan = PubSubManager.Instance;
+        }
 
-    public void Publish(string key, object value) {
-        pubSubMan.Publish(key, gameObject, value);
+        // Update is called once per frame
+        void Update()
+        {
+            
+        }
+
+        public void Publish(string key) {
+            pubSubMan.Publish(key, gameObject, this);
+        }
+
+        public void Publish(string key, object value) {
+            pubSubMan.Publish(key, gameObject, value);
+        }
     }
 }
