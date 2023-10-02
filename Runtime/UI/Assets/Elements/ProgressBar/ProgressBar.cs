@@ -39,8 +39,8 @@ public class ProgressBar : MonoBehaviour
         }
 
         progressIndicator.preferredWidth = barSize;
+        progressIndicator.gameObject.SetActive(isIndeterminate || barSize > 0);
         progressIndicatorLeftPadding.preferredWidth = leftPaddingSize;
-        progressIndicatorLeftPadding.gameObject.SetActive(isIndeterminate || leftPaddingSize > 0);
     }
 
     public void SetIndeterminateMode(bool isIndeterminate)
