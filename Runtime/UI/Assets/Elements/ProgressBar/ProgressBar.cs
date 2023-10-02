@@ -11,7 +11,6 @@ public class ProgressBar : MonoBehaviour
     public float indeterminateTime = 0f;
     public AnimationCurve indeterminateCurve;
     public float indeterminateDuration = 1f;
-
     public RectTransform progressIndicatorContainer;
     public LayoutElement progressIndicator, progressIndicatorLeftPadding;
 
@@ -41,6 +40,7 @@ public class ProgressBar : MonoBehaviour
 
         progressIndicator.preferredWidth = barSize;
         progressIndicatorLeftPadding.preferredWidth = leftPaddingSize;
+        progressIndicatorLeftPadding.gameObject.SetActive(isIndeterminate || leftPaddingSize > 0);
     }
 
     public void SetIndeterminateMode(bool isIndeterminate)
