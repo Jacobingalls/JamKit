@@ -9,21 +9,12 @@ namespace info.jacobingalls.jamkit
 {
     public class PubSubListener : MonoBehaviour
     {
-
-        private PubSubManager pubSubMan;
         public List<PubSubListenerDelegateRow> Subscriptions;
 
         // Start is called before the first frame update
         void Start()
         {
-            pubSubMan = PubSubManager.Instance;
             Subscribe();
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         void OnDestroy() {
@@ -37,7 +28,7 @@ namespace info.jacobingalls.jamkit
         }
 
         public void Subscribe(string key) {
-            pubSubMan.Subscribe(key, this);
+            PubSubManager.Instance.Subscribe(key, this);
         }
 
         public void Subscribe(string key, PubSubListenerUnityEvent e) {
@@ -47,16 +38,16 @@ namespace info.jacobingalls.jamkit
 
         public void Unsubscribe() {
             foreach (var sub in Subscriptions) {
-                if (pubSubMan)
+                if (PubSubManager.Instance)
                 {
-                    pubSubMan.Unsubscribe(sub.Key, this);
+                    PubSubManager.Instance.Unsubscribe(sub.Key, this);
                 }
             }
             Subscriptions.Clear();
         }
 
         public void Unsubscribe(string key) {
-            pubSubMan.Unsubscribe(key, this);
+            PubSubManager.Instance.Unsubscribe(key, this);
             Subscriptions.Remove(Subscriptions.Find((s) => s.Key == key));
         }
 

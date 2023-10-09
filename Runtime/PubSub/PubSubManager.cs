@@ -14,13 +14,14 @@ namespace info.jacobingalls.jamkit
                 if (!_instance)
                 {
                     var go = new GameObject();
-                    go.transform.name = "Pub-Sub Manager";
+                    go.transform.name = $"Pub-Sub Manager";
                     _instance = go.AddComponent<PubSubManager>();
                 }
                 return _instance;
             }
         }
-        public Dictionary<string, HashSet<PubSubListener>> listeners = new Dictionary<string, HashSet<PubSubListener>>();
+
+        private readonly Dictionary<string, HashSet<PubSubListener>> _listeners = new();
 
         private void Awake()
         {
@@ -33,22 +34,10 @@ namespace info.jacobingalls.jamkit
             _instance = this;
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            
-        }
-
         public void Publish(string key, GameObject sender, object value) {
             PubSubListenerEvent e = new PubSubListenerEvent(key, sender, value);
-            if (listeners.ContainsKey(key)) {
-                HashSet<PubSubListener> pubSubListeners = listeners[key];
+            if (_listeners.ContainsKey(key)) {
+                HashSet<PubSubListener> pubSubListeners = _listeners[key];
                 foreach (PubSubListener listener in pubSubListeners) {
                     listener.Receive(e);
                 }
@@ -56,19 +45,19 @@ namespace info.jacobingalls.jamkit
         }
 
         public void Subscribe(string key, PubSubListener listener) {
-            if (!listeners.ContainsKey(key)) {
-                listeners[key] = new HashSet<PubSubListener>();
+            if (!_listeners.ContainsKey(key)) {
+                _listeners[key] = new HashSet<PubSubListener>();
             }
 
-            listeners[key].Add(listener);
+            _listeners[key].Add(listener);
         }
 
         public void Unsubscribe(string key, PubSubListener listener) {
-            if (!listeners.ContainsKey(key)) {
+            if (!_listeners.ContainsKey(key)) {
                 return;
             }
 
-            listeners[key].Remove(listener);
+            _listeners[key].Remove(listener);
         }
     }
 
