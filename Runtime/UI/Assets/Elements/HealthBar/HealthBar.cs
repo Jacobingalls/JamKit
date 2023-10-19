@@ -10,7 +10,21 @@ namespace info.jacobingalls.jamkit
     public class HealthBar : MonoBehaviour
     {
 
-        private float health;
+        private float _health;
+        public float Value {
+            get {
+                return _health;
+            }
+
+            set {
+                var delta = _health - value;
+                if (delta > 0) {
+                    DamageAmount(delta);
+                } else if (delta < 0) {
+                    HealAmount(-delta);
+                }
+            }
+        }
 
         public float StartingHealth = 100.0f;
         public float MaxHealth = 100.0f;
@@ -45,7 +59,7 @@ namespace info.jacobingalls.jamkit
         // Start is called before the first frame update
         void Start()
         {
-            health = StartingHealth;
+            _health = StartingHealth;
         }
 
         // Update is called once per frame
@@ -99,41 +113,41 @@ namespace info.jacobingalls.jamkit
             recentHealingBar.preferredWidth = healingWidth;
             recentHealingBar.gameObject.SetActive(healingWidth > 0);
 
-            healthBar.preferredWidth = width * (Mathf.Max(0, health - recentHealing + recentDamageDelta) / MaxHealth);
+            healthBar.preferredWidth = width * (Mathf.Max(0, _health - recentHealing + recentDamageDelta) / MaxHealth);
         }
 
         public void HealAmount(float amount)
         {
-            float maxAmount = Mathf.Min(amount, Mathf.Max(MaxHealth - health, 0));
+            float maxAmount = Mathf.Min(amount, Mathf.Max(MaxHealth - _health, 0));
             if (maxAmount <= 0) { return; }
 
-            health += maxAmount;
+            _health += maxAmount;
             recentHealing += maxAmount;
             recentDamage = Mathf.Max(recentDamage - maxAmount, 0);
             recentHealingTime = 0;
-            OnHeal.Invoke(health);
+            OnHeal.Invoke(_health);
         }
 
         public void HealPercentage(float percentage)
         {
-            HealAmount(health * (percentage / 100.0f));
+            HealAmount(_health * (percentage / 100.0f));
         }
 
         public void DamageAmount(float amount)
         {
-            float maxAmount = Mathf.Min(amount, health);
+            float maxAmount = Mathf.Min(amount, _health);
             if (maxAmount <= 0) { return; }
 
-            health -= maxAmount;
+            _health -= maxAmount;
             recentDamage += maxAmount;
             recentHealing = Mathf.Max(recentHealing - maxAmount, 0);
             recentDamageTime = 0;
-            OnDamage.Invoke(health);
+            OnDamage.Invoke(_health);
         }
 
         public void DamagePercentage(float percentage)
         {
-            DamagePercentage(health * (percentage / 100.0f));
+            DamagePercentage(_health * (percentage / 100.0f));
         }
     }
 }
