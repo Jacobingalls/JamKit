@@ -10,6 +10,8 @@ namespace info.jacobingalls.jamkit
         public HealthBar healthBar, staminaBar;
         private float currentTime = 1f;
 
+        public AudioSource AudioSource;
+        public AudioClip VeryLightAttachSound, LightAttackSound, MediumAttackSound, MediumStaminaAttackSound, HeavyAttackSound, HealSound;
 
         // Start is called before the first frame update
         void Start()
@@ -31,6 +33,8 @@ namespace info.jacobingalls.jamkit
             currentTime += Random.Range(-0.25f, 0.25f);
 
             if (healthBar.Value <= 0) {
+                AudioSource.pitch = Random.Range(0.95f, 1.05f);
+                AudioSource.PlayOneShot(HealSound);
                 deal(-100, -100);
                 currentTime += 5.0f;
                 return;
@@ -73,26 +77,36 @@ namespace info.jacobingalls.jamkit
         public void VeryLightAttack() {
             var scaler = Random.Range(0.8f, 1.2f);
             deal(2 * scaler, 5 * scaler);
+            AudioSource.pitch = Random.Range(0.95f, 1.05f);
+            AudioSource.PlayOneShot(VeryLightAttachSound);
         }
 
         public void LightAttack() {
             var scaler = Random.Range(0.8f, 1.2f);
             deal(5 * scaler, 15 * scaler);
+            AudioSource.pitch = Random.Range(0.95f, 1.05f);
+            AudioSource.PlayOneShot(LightAttackSound);
         }
 
         public void MediumAttack() {
             var scaler = Random.Range(0.8f, 1.2f);
             deal(20 * scaler, 10 * scaler);
+            AudioSource.pitch = Random.Range(0.95f, 1.05f);
+            AudioSource.PlayOneShot(MediumAttackSound);
         }
 
         public void MediumStunAttack() {
             var scaler = Random.Range(0.8f, 1.2f);
             deal(10 * scaler, 40 * scaler);
+            AudioSource.pitch = Random.Range(0.95f, 1.05f);
+            AudioSource.PlayOneShot(MediumStaminaAttackSound);
         }
 
         public void HeavyAttack() {
             var scaler = Random.Range(0.8f, 1.2f);
             deal(40 * scaler, 80 * scaler);
+            AudioSource.pitch = Random.Range(0.95f, 1.05f);
+            AudioSource.PlayOneShot(HeavyAttackSound);
         }
     }
 
