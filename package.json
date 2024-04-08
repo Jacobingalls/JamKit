@@ -1,7 +1,10 @@
 {
-	"name": "info.jacobingalls.jamkit",
-	"version": "0.0.4",
-	"displayName": "Jam Kit",
-	"description": "A collection of scripts useful for Game Jams",
-	"unity": "2021.3"
+  "name": "info.jacobingalls.jamkit",
+  "version": "0.0.5",
+  "displayName": "Jam Kit",
+  "description": "A collection of scripts useful for Game Jams",
+  "unity": "2022.3",
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.8"
+  }
 }
