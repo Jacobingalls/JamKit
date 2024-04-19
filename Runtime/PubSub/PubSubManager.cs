@@ -1,58 +1,46 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace info.jacobingalls.jamkit
 {
-    public class PubSubManager : MonoBehaviour
+    public class PubSubManager
     {
         private static PubSubManager _instance;
         public static PubSubManager Instance
         {
             get
             {
-                if (!_instance)
+                if (_instance == null)
                 {
-                    var go = new GameObject();
-                    go.transform.name = $"Pub-Sub Manager";
-                    _instance = go.AddComponent<PubSubManager>();
+                    _instance = new PubSubManager();
                 }
                 return _instance;
             }
         }
 
-        private readonly Dictionary<string, HashSet<PubSubListener>> _listeners = new();
-
-        private void Awake()
-        {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-
-            _instance = this;
-        }
+        private readonly Dictionary<string, HashSet<IPubSubReceivable>> _listeners = new();
 
         public void Publish(string key, GameObject sender, object value) {
             PubSubListenerEvent e = new PubSubListenerEvent(key, sender, value);
             if (_listeners.ContainsKey(key)) {
-                HashSet<PubSubListener> pubSubListeners = _listeners[key];
-                foreach (PubSubListener listener in pubSubListeners) {
+                HashSet<IPubSubReceivable> pubSubListeners = _listeners[key];
+                foreach (IPubSubReceivable listener in pubSubListeners) {
                     listener.Receive(e);
                 }
             }
         }
 
-        public void Subscribe(string key, PubSubListener listener) {
+        public void Subscribe(string key, IPubSubReceivable listener) {
             if (!_listeners.ContainsKey(key)) {
-                _listeners[key] = new HashSet<PubSubListener>();
+                _listeners[key] = new HashSet<IPubSubReceivable>();
             }
 
             _listeners[key].Add(listener);
         }
 
-        public void Unsubscribe(string key, PubSubListener listener) {
+        public void Unsubscribe(string key, IPubSubReceivable listener) {
             if (!_listeners.ContainsKey(key)) {
                 return;
             }

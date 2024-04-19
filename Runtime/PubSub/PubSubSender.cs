@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace info.jacobingalls.jamkit
 {
+
     public class PubSubSender : MonoBehaviour
     {
         public void Publish(string key) {
