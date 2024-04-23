@@ -7,7 +7,13 @@ using UnityEngine;
 
 namespace info.jacobingalls.jamkit
 {
-    public class PubSubListener : MonoBehaviour
+
+    public interface IPubSubReceivable
+    {
+        public void Receive(PubSubListenerEvent e);
+    }
+
+    public class PubSubListener : MonoBehaviour, IPubSubReceivable
     {
         public List<PubSubListenerDelegateRow> Subscriptions;
 
@@ -38,7 +44,7 @@ namespace info.jacobingalls.jamkit
 
         public void Unsubscribe() {
             foreach (var sub in Subscriptions) {
-                if (PubSubManager.Instance)
+                if (PubSubManager.Instance != null)
                 {
                     PubSubManager.Instance.Unsubscribe(sub.Key, this);
                 }
