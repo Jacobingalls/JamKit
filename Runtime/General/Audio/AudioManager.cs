@@ -51,13 +51,21 @@ public class AudioManager : MonoBehaviour
         sounds[soundInfo.id] = soundInfo;
     }
 
-    public void PlaySound(string id) {
-        Play(id);
+    public AudioSource PlaySound(string id) {
+        return Play(id);
     }
-    
-    public void Play(string id, bool loop = false, float pitchMin = 1.0f, float pitchMax = 1.0f, float volumeMin = 1.0f, float volumeMax = 1.0f, bool isMusic = false, Vector3? position = null, float minDistance = 1, float maxDistance = 1000)
+
+    public static AudioSource Play2D(this AudioManager am, string id, bool loop = false, float pitchMin = 1.0f, float pitchMax = 1.0f, float volumeMin = 1.0f, float volumeMax = 1.0f, bool isMusic = false, Vector3? position = null, float minDistance = 0.01f, float maxDistance = 20.0f)
     {
-        //Debug.Log("Play " + id);
+        if (position != null)
+        {
+            position = new(Camera.main.transform.position.x, position.Value.y, Camera.main.transform.position.z);
+        }
+        return am.Play(id, loop, pitchMin, pitchMax, volumeMin, volumeMax, isMusic, position, minDistance, maxDistance);
+    }
+
+    public AudioSource Play(string id, bool loop = false, float pitchMin = 1.0f, float pitchMax = 1.0f, float volumeMin = 1.0f, float volumeMax = 1.0f, bool isMusic = false, Vector3? position = null, float minDistance = 1, float maxDistance = 1000)
+    {
         AudioSource audioSource = null;
         for (int i = 0; i < NUMBER_OF_AUDIO_SOURCES; i++)
         {
@@ -66,29 +74,25 @@ public class AudioManager : MonoBehaviour
                 audioSource = audioSources[i];
                 break;
             }
-            //else
-            //{
-            //    Debug.Log(audioSources[i] + " is playing");
-            //}
         }
 
         if(audioSource == null)
         {
             Debug.Log("Unable to play " + id + " as there are no audio sources available.");
-            return;
+            return audioSource;
         }
 
         if(!sounds.ContainsKey(id))
         {
             Debug.Log("Unable to play " + id + " as there is no sound info associated with the id.");
-            return;
+            return audioSource;
         }
 
         SoundInfo soundInfo = sounds[id];
         if(soundInfo.audioClips.Length <= 0)
         {
             Debug.Log("Unable to play " + id + " as there are no clips associated with the id.");
-            return;
+            return audioSource;
         }
 
         audioSource.pitch = Random.Range(pitchMin, pitchMax);
@@ -116,6 +120,8 @@ public class AudioManager : MonoBehaviour
         {
             _musicSource = audioSource;
         }
+
+        return audioSource;
     }
 
     AudioSource _musicSource;
