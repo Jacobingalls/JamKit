@@ -168,10 +168,13 @@ public class AudioManager : MonoBehaviour
     float GetVolumeFromPrefs(string volumeKey)
     {
         if (!PlayerPrefs.HasKey(volumeKey)) {
-            PlayerPrefs.SetFloat(volumeKey, 1.0f);
-            PlayerPrefs.Save();
-            Debug.Log(volumeKey + " = 1.0f");
-            return 1.0f;
+            float currentVolume = 0.5f;
+            if (volumeKey == "globalVol") {
+                currentVolume = 1.0f;
+            }
+
+            Debug.Log(volumeKey + " = " + currentVolume + " (default)");
+            return currentVolume;
         } else
         {
             Debug.Log(volumeKey + " = " + PlayerPrefs.GetFloat(volumeKey));
