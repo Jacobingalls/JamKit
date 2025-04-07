@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
     public float SFXVolume { get; protected set; }
     public float EnvironmentVolume { get; protected set; }
 
-    private const int NUMBER_OF_AUDIO_SOURCES = 16;
+    private const int NUMBER_OF_AUDIO_SOURCES = 64;
 
     public void RegisterSoundInfo(SoundInfo soundInfo)
     {
