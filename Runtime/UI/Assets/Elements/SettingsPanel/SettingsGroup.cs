@@ -18,6 +18,9 @@ public class SettingsGroup : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     public TMP_Dropdown qualityDropdown;
 
+    public GameObject resolutionRow;
+    public GameObject displayModeRow;
+
     Resolution[] resolutions;
 
     public void SetQuality(int qualityIndex)
@@ -163,6 +166,9 @@ public class SettingsGroup : MonoBehaviour
 
         displayModeDropdown.AddOptions(placeholderOptions);
         resolutionDropdown.AddOptions(placeholderOptions);
+
+        displayModeRow.SetActive(false);
+        resolutionRow.SetActive(false);
 #endif
     }
 
