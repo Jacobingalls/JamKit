@@ -156,6 +156,8 @@ public class AudioManager : MonoBehaviour
             var audioSource = go.GetComponent<AudioSource>();
             audioSources.Add(audioSource);
         }
+
+        InitializeVolumes();
     }
 
     private void Start()

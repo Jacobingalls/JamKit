@@ -1,6 +1,6 @@
 {
   "name": "info.jacobingalls.jamkit",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "displayName": "Jam Kit",
   "description": "A collection of scripts useful for Game Jams",
   "unity": "2022.3",
