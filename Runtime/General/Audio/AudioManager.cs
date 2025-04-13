@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -145,6 +144,17 @@ public class AudioManager : MonoBehaviour
         }
         _instance = this;
 
+        CreatePooledAudioSources();
+    }
+
+    private void Start()
+    {
+        InitializeVolumes();
+        Play(AmbianceSoundInfoID, true, volumeMin: 0.25f, volumeMax: 0.25f);
+        Play(MusicSoundInfoID, true, volumeMin: 0.5f, volumeMax: 0.5f, isMusic: true);
+    }
+
+    private void CreatePooledAudioSources() {
         GameObject audioSourcesGO = new GameObject();
         audioSourcesGO.transform.name = "Audio Source Pool";
         audioSourcesGO.transform.parent = transform;
@@ -160,9 +170,16 @@ public class AudioManager : MonoBehaviour
         InitializeVolumes();
     }
 
-    private void Start()
+    public void Reset()
     {
-        InitializeVolumes();
+
+        // Destroy all audio sources
+        foreach(AudioSource source in audioSources ) {
+            Destroy(source.gameObject);
+        }
+        audioSources = new List<AudioSource>();
+
+        CreatePooledAudioSources();
         Play(AmbianceSoundInfoID, true, volumeMin: 0.25f, volumeMax: 0.25f);
         Play(MusicSoundInfoID, true, volumeMin: 0.5f, volumeMax: 0.5f, isMusic: true);
     }
