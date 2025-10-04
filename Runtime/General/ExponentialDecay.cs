@@ -3,12 +3,14 @@ using UnityEngine;
 namespace info.jacobingalls.jamkit
 {
 
+    // Frame-rate independent lerp smoothing
     public static class ExponentialDecay
     {
 
         // https://acegikmo.substack.com/p/lerp-smoothing-is-broken
         public static float Evaluate(float a, float b, float decay, float deltaTime)
         {
+            if (Mathf.Abs(b - a) < 0.0001f) return b;
             return b + (a - b) * Mathf.Exp(-decay * deltaTime);
         }
 
@@ -19,7 +21,11 @@ namespace info.jacobingalls.jamkit
 
         public static Vector3 Evaluate(Vector3 a, Vector3 b, float decay, float deltaTime)
         {
-            return b + (a - b) * Mathf.Exp(-decay * deltaTime);
+            return new Vector3(
+                Evaluate(a.x, b.x, decay, deltaTime),
+                Evaluate(a.y, b.y, decay, deltaTime),
+                Evaluate(a.z, b.z, decay, deltaTime)
+            );
         }
 
         public static Vector3 DecayTowards(this Vector3 a, Vector3 b, float decay, float deltaTime)
@@ -29,7 +35,10 @@ namespace info.jacobingalls.jamkit
 
         public static Vector2 Evaluate(Vector2 a, Vector2 b, float decay, float deltaTime)
         {
-            return b + (a - b) * Mathf.Exp(-decay * deltaTime);
+            return new Vector2(
+                Evaluate(a.x, b.x, decay, deltaTime),
+                Evaluate(a.y, b.y, decay, deltaTime)
+            );
         }
 
         public static Vector2 DecayTowards(this Vector2 a, Vector2 b, float decay, float deltaTime)
@@ -49,7 +58,12 @@ namespace info.jacobingalls.jamkit
 
         public static Color Evaluate(Color a, Color b, float decay, float deltaTime)
         {
-            return b + (a - b) * Mathf.Exp(-decay * deltaTime);
+            return new Color(
+                Evaluate(a.r, b.r, decay, deltaTime),
+                Evaluate(a.g, b.g, decay, deltaTime),
+                Evaluate(a.b, b.b, decay, deltaTime),
+                Evaluate(a.a, b.a, decay, deltaTime)
+            );
         }
 
         public static Color DecayTowards(this Color a, Color b, float decay, float deltaTime)
