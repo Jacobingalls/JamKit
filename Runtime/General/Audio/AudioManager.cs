@@ -58,7 +58,7 @@ public class AudioManager : MonoBehaviour
     {
         if (position != null)
         {
-            position = new(Camera.main.transform.position.x, position.Value.y, Camera.main.transform.position.z);
+            position = new(position.Value.x, position.Value.y, Camera.main.transform.position.z);
         }
         return Play(id, loop, pitchMin, pitchMax, volumeMin, volumeMax, isMusic, position, minDistance, maxDistance);
     }
