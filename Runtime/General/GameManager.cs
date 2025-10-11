@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public string TitleSceneName, TutorialSceneName, GameSceneName, WinSceneName, LoseSceneName;
 
+    public List<string> extraScenes = new List<string>();
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -50,6 +52,13 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetSceneByName(WinSceneName).isLoaded)
         {
             scenesLoading.Add(SceneManager.UnloadSceneAsync(WinSceneName));
+        }
+
+        foreach (var scene in extraScenes) {
+            if (SceneManager.GetSceneByName(scene).isLoaded)
+            {
+                scenesLoading.Add(SceneManager.UnloadSceneAsync(scene));
+            }
         }
     }
 
@@ -114,6 +123,19 @@ public class GameManager : MonoBehaviour
         UnloadAll();
 
         scenesLoading.Add(SceneManager.LoadSceneAsync(WinSceneName, LoadSceneMode.Additive));
+
+        StartCoroutine(GetSceneLoadProgress());
+    }
+
+    public void ShowCustomScene(string name)
+    {
+        _activeLoadingScreen = transitionalLoadingScreen;
+        if (_activeLoadingScreen.activeSelf == true) { return; }
+        _activeLoadingScreen.SetActive(true);
+
+        UnloadAll();
+
+        scenesLoading.Add(SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive));
 
         StartCoroutine(GetSceneLoadProgress());
     }
